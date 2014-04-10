@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="author" content="Rathinho">
+	<meta name="email" content="rathinho@qq.com">
+	<meta name="description" content="TODO">
+	<meta name="keywords" content="wechat,todo,management,project">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<!-- title -->
+	<title>TODO</title>
+
+	<!-- html5 reset css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css">
+	<!-- util css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/util.css">
+	<!-- customized css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+</head>
+
+<body>
+	<!-- the wrapper, all views will be appended inside -->
+	<div class="wrapper" id="wrapper">
+
+	</div>
+
+
+	<!-- Javascript templates for backbone view -->
+	<script type="text/template" id="infoBar-template">
+		/*
+		 * TagName: div, ClassName: container bg-black, id:info-sidebar
+		 */
+		<div class="user-info">
+			<div class="user-avatar fl">
+				<img src="<%= avatar_url" alt="avatar">
+			</div>
+			<div class="user-resume fl">
+				<p class="bold text-white fs20"><%= username %></p>
+				<p class="text-grey fs18"><%= position %></p>
+			</div>
+		</div>
+
+		<div class="project-frame">
+			<div class="project-banner banner">
+				<div class="fl indent15 text-grey fs20">我的项目</div>
+				<div class="project-adder fr fs20 text-white">+</div>
+			</div>
+
+			<div class="scroller" id="project-scroller">
+				<ul class="ul-noListStyle project-list text-white fs18" id="project-list">
+					// project items will be added here
+					<li>Loiter项目管理</li>
+					<li>黄埔军校可视化方案</li>
+					<li>Yanis Net品牌包装计划</li>
+					<li>Holly Shit项目</li>
+					<li>大学生酸梅计划</li>
+				</ul>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="msgBar-template">
+		/*
+		 * TagName: div, ClassName: container bg-black, id:msg-sidebar
+		 */
+		<div class="msg-banner banner">
+			<div class="fl indent15 text-grey fs20">消息</div>
+		</div>
+		<div class="scroller" id="msg-scroller">
+			<ul class="ul-noListStyle msg-list" id="msg-list">
+				// msg view will be appended here
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="msg-template">
+		/*
+		 * TagName: li, id:msg-"MsgId"
+		 */
+		<div class="msg">
+			<p>
+				<span class="msg-proj fs18 text-white"><%= project_name %></span>
+				<span class="msg-task fs14 text-grey">/<%= task_name %></span>
+			</p>
+			<p class="msg-content fs16 text-grey"><%= msg_content %></p>
+			<p class="msg-date fs14 text-grey text-right"><%= msg_time %></p>
+		</div>
+	</script>
+
+	<script type="text/template" id="main-template">
+		/*
+		 * TagName: div, ClassName: container bg-black, id:main
+		 */
+		<div class="scroller" id="main-scroll">
+			<ul class="ul-noListStyle main-list" id="main-list">
+				<li>
+					<div class="box" id="project-info">
+						<div class="project-process fl"></div>
+						<div class="project-detail fl">
+							<p class="project-name bold fs18"><%= project_name</p>
+							<p class="project-leader"><%= project_manager %></p>
+							<p class="project-intro"><%= project_description %></p>
+						</div>
+					</div>
+				</li>
+				
+				// stages view will be added here
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="stage-template">
+		/*
+		 * TagName: li
+		 */
+		<div class="box stage">
+			<div class="stage-banner">
+				<div class="bold fs18 fl">第<%= stage_order %>阶段</div>
+				<div class="bold fs20 fr task-adder">+</div>
+			</div>
+			
+			<ul class="ul-noListStyle task-list" id="task-list">
+				// task views will be appended here
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="task-template">
+		/*
+		 * TagName: li
+		 */
+		<div class="task">
+			<div class="task-avatar">
+				<div class="circle-frame">
+					<img src="<%= avatar_url %>" alt="avat">
+				</div>
+			</div>
+			<div class="task-info">
+				<p class="task-name bold"><%= task_name %></p>
+				<p class="fs12">
+					<span class="task-starttime"><%= start_time %>/<%= start_date %></span>
+					<span class="task-duetiime"><%= end_time %>/<%= end_date %></span>
+				</p>
+			</div>
+			<div class="task-status finished">
+				<% switch (status) {
+						case "finished" : %>已完成<%
+						case "ongoing"  : %>进行中<%
+						case "checking" : %>审核中<%
+						default:          %>不可用<%
+					}
+				 %>
+			</div>
+		</div>
+	</script>
+
+	<!-- js files of supported components -->
+	<script src="javascripts/components/zepto.min.js"></script>
+	<script src="javascripts/components/underscore-min.js"></script>
+	<script src="javascripts/components/backbone-min.js"></script>
+	<script src="javascripts/components/iscroll.js"></script>
+
+	<!-- js files of backbone parts -->
+	<script src="javascripts/models.js"></script>
+	<script src="javascripts/views.js"></script>
+	<script src="javascripts/routers.js"></script>
+
+	<!-- main js file -->
+	<script src="javascripts/app.js"></script>
+</body>
+</html>

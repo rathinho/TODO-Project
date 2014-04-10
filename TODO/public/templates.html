@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="author" content="Rathinho">
+	<meta name="email" content="rathinho@qq.com">
+	<meta name="description" content="TODO">
+	<meta name="keywords" content="wechat,todo,management,project">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<!-- title -->
+	<title>TODO</title>
+
+	<!-- html5 reset css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css">
+	<!-- util css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/util.css">
+	<!-- customized css -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+</head>
+<body>
+	<div class="wrapper" id="wrapper">
+		<div class="container bg-black" id="info-sidebar">
+			<div class="user-info">
+				<div class="user-avatar fl">
+					<img src="images/default.png" alt="avatar">
+				</div>
+				<div class="user-resume fl">
+					<p class="bold text-white fs20">Rathinho</p>
+					<p class="text-grey fs18">前端工程师</p>
+				</div>
+			</div>
+
+			<div class="project-frame">
+				<div class="project-banner banner">
+					<div class="fl indent15 text-grey fs20">我的项目</div>
+					<div class="project-adder fr fs20 text-white">+</div>
+				</div>
+
+				<div class="scroller" id="project-scroller">
+					<ul class="ul-noListStyle project-list text-white fs18" id="project-list">
+						<li>Loiter项目管理</li>
+						<li>黄埔军校可视化方案</li>
+						<li>Yanis Net品牌包装计划</li>
+						<li>Holly Shit项目</li>
+						<li>大学生酸梅计划</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container bg-black" id="msg-sidebar">
+			<div class="msg-banner banner">
+				<div class="fl indent15 text-grey fs20">消息</div>
+			</div>
+			<div class="scroller" id="msg-scroller">
+				<ul class="ul-noListStyle msg-list">
+					<li>
+						<div class="msg">
+							<p>
+								<span class="msg-proj fs18 text-white">Loiter项目管理</span>
+								<span class="msg-task fs14 text-grey">/用户界面初稿</span>
+							</p>
+							<p class="msg-content fs16 text-grey">已通过审核</p>
+							<p class="msg-date fs14 text-grey text-right">09:30 3月22日</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="container main bg-grey" id="main">
+			<div class="scroller" id="main-scroll">
+				<ul class="ul-noListStyle main-list">
+					<li>
+						<div class="box" id="project-info">
+							<div class="project-process fl"></div>
+							<div class="project-detail fl">
+								<p class="project-name bold fs18">Loiter项目管理</p>
+								<p class="project-leader">Rathinho</p>
+								<p class="project-intro">基于微信平台的公司项目管理移动客户端</p>
+							</div>
+						</div>
+					</li>
+					
+					<li>
+						<div class="box stage">
+							<div class="stage-banner">
+								<div class="bold fs18 fl">第一阶段</div>
+								<div class="bold fs20 fr task-adder">+</div>
+							</div>
+							
+							<ul class="ul-noListStyle task-list">
+								<li>
+									<div class="task">
+										<div class="task-avatar">
+											<div class="circle-frame">
+												<img src="images/default.png" alt="avat">
+											</div>
+										</div>
+										<div class="task-info">
+											<p class="task-name bold">主要功能设计</p>
+											<p class="fs12">
+												<span class="task-starttime">12:34/3月18日</span>
+												<span class="task-duetiime">12:30/3月21日</span>
+											</p>
+										</div>
+										<div class="task-status finished">已完成</div>
+									</div>
+								</li>
+								<li>
+									<div class="task">
+										<div class="task-avatar fl">
+											<div class="circle-frame">
+												<img src="images/default.png" alt="avat">
+											</div>
+										</div>
+										<div class="task-info fl">
+											<p class="task-name bold">主要功能设计</p>
+											<p class="fs12">
+												<span class="task-starttime">12:34/3月18日</span>
+												<span class="task-duetiime">12:30/3月21日</span>
+											</p>
+										</div>
+										<div class="task-status checking">待审核</div>
+									</div>
+								</li>
+								<li>
+									<div class="task">
+										<div class="task-avatar fl">
+											<div class="circle-frame">
+												<img src="images/default.png" alt="avat">
+											</div>
+										</div>
+										<div class="task-info fl">
+											<p class="task-name bold">主要功能设计</p>
+											<p class="fs12">
+												<span class="task-starttime">12:34/3月18日</span>
+												<span class="task-duetiime">12:30/3月21日</span>
+											</p>
+										</div>
+										<div class="task-status ongoing">进行中</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/template" id="infoBar-template">
+
+	</script>
+
+
+	<script src="javascripts/components/zepto.min.js"></script>
+	<script src="javascripts/components/underscore-min.js"></script>
+	<script src="javascripts/components/backbone-min.js"></script>
+	<script src="javascripts/components/iscroll.js"></script>
+
+	<script type="text/javascript">
+		var mainScroll = new iScroll("main-scroll", {vScrollbar: false}),
+			projectScroller = new iScroll("project-scroller", {vScrollbar: false}),
+			msgScroller = new iScroll("msg-scroller", {vScrollbar: false});
+
+		var left = $("#info-sidebar"),
+			right = $("#msg-sidebar"),
+			main = $("#main");
+
+
+		(function resize() {
+			var width = parseInt(main.css('width'));
+
+			left.css('width', 300 + 'px');
+			right.css('width', 300 + 'px').css('left', (width - 300) + 'px');
+		})();
+
+		$("#main").swipeRight(function() {
+			var _this = $(this),
+				leftOffset = parseInt(_this.css("-webkit-transform").match(/-?\d{1,}/g));			
+
+			if (isNaN(leftOffset) || leftOffset === 0) {
+				left.show();
+				right.hide();
+				mainScroll.disable();
+				_this.css({'-webkit-transform':'translate(300px)','-webkit-transition':'200ms ease-in'});				
+			} else if (leftOffset < 0) {
+				_this.css({'-webkit-transform':'translate(0)','-webkit-transition':'200ms ease-in'});
+
+				setTimeout(function() {
+					right.hide();
+					mainScroll.enable();			
+				}, 200);				
+			}
+
+			
+		});
+
+		$("#main").swipeLeft(function() {
+			var _this = $(this),
+				leftOffset = parseInt(_this.css("-webkit-transform").match(/-?\d{1,}/g)
+					);
+
+			if (isNaN(leftOffset) || leftOffset === 0) {
+				left.hide();
+				right.show();
+				mainScroll.disable();
+				_this.css({'-webkit-transform':'translate(-300px)','-webkit-transition':'200ms ease-out'});
+			} else if (leftOffset > 0) {
+				_this.css({'-webkit-transform':'translate(0)','-webkit-transition':'200ms ease-out'});
+
+				setTimeout(function() {
+					left.hide();
+					mainScroll.enable();
+				}, 200);					
+			}		
+		});
+	</script>
+</body>
+</html>

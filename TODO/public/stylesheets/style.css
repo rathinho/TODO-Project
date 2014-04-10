@@ -1,0 +1,257 @@
+/*
+ *  Customized style
+ */
+
+img {
+	width: 100%;
+	height: 100%;
+}
+
+.wrapper {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.scroller {
+	height: 100%;
+}
+
+.banner {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background-color: #2F3944;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.02, #4A5A6A), color-stop(0.03, #343F4B), color-stop(0.96, #29323C), color-stop(1, #131B22));
+	border-top: 2px solid #171f27;
+	border-bottom: 2px solid #2F3C47;
+}
+
+.bg-black {
+	background-color: #212a33;
+}
+
+.bg-grey {
+	background-color: #555463;
+}
+
+
+/* 
+ * left sidebar style 
+ */
+.user-info {
+	position: relative;
+	width: 100%;
+	height: 54px;
+	padding: 15px;
+}
+
+.user-avatar {
+	overflow: hidden;
+	width: 54px;
+	height: 54px;
+	border-radius: 100%;
+	border: 1px solid #353030;
+	box-shadow: 0 1px 3px #6A7886;
+}
+
+.user-resume {
+	margin-left: 15px;
+	line-height: 27px;
+}
+
+
+/* project list style */
+.project-frame {
+	height: 100%;
+}
+
+.project-banner {
+
+}
+
+.project-adder {
+	overflow: hidden;
+	width: 28px;
+	height: 28px;
+	margin: 4px 20px;
+	line-height: 28px;
+	text-align: center;
+	/*background-color: #CAC5C5;*/
+	border-radius: 100%;
+	border: 1px solid #5F5C5C;
+	box-shadow: 1px 1px 2px #0E0E0E;
+	cursor: pointer;
+}
+
+.project-adder:active {
+	position: relative;
+	left: 1px;
+	top: 1px;
+	box-shadow: -1px -1px 2px #0E0E0E;
+}
+
+.project-list li {
+	height: 50px;
+	padding-left: 15px;
+	line-height: 50px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #212a33), color-stop(1, #131B22));
+	border-bottom: 2px solid #2F3C47;
+	cursor: pointer;
+}
+
+.project-list li:active {
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #3C434B), color-stop(1, #131B22));
+}
+
+/* 
+ * right sidebar style 
+ */
+.msg-list li {
+	padding: 5px 10px 5px 15px;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #212a33), color-stop(1, #131B22));
+	border-bottom: 2px solid #2F3C47;
+	cursor: pointer;
+}
+
+.msg-list li:active {
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #3C434B), color-stop(1, #131B22));
+}
+
+/*
+ *	main container style
+ */
+.main {
+	box-shadow: 0 0 20px #000;
+}
+
+.main-list {
+	padding: 24px 0 1px;
+}
+
+.project-process {
+	width: 35%;
+	height: 100%;
+	padding: 10px 2%;
+	background-color: red;
+}
+
+.project-detail {
+	width: 57%;
+	padding: 10px 2%;
+}
+
+.project-detail > p {
+	margin: 10px auto;
+}
+
+.stage {
+
+}
+
+.stage .stage-banner {
+	width: 97%;
+	height: 30px;
+	padding: 5px 1.5%;
+	color: #666;
+	text-shadow: 1px 1px #fff;
+	line-height: 30px;
+	background-color: #d1d1d1;
+}
+
+.stage .task-adder {
+	width: 28px;
+	height: 28px;
+	text-align: center;
+	line-height: 28px;
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #eee), color-stop(1, #d1d1d1));
+	border: 1px solid #afafaf;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.stage .task-adder:active {
+	background-color: #a1a1a1;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #d1d1d1), color-stop(1, #eee));
+}
+
+.task-list li {
+	border-bottom: 1px solid #666;
+}
+
+.task-list li:last-child {
+	border-bottom: none;
+}
+
+.task {
+	position: relative;
+	overflow: hidden;
+	height: 40px;
+	padding: 10px;
+	color: #404040;
+}
+
+.task .task-avatar {
+	position: absolute;
+	left: 10px;
+	width: 40px;
+	height: 40px;
+}
+
+.task .task-info {
+	position: absolute;
+	left: 60px;
+	right: 80px;
+	line-height: 20px;
+}
+
+.task .task-info .task-duetiime {
+	color: #9eb627;
+}
+
+.task .task-status {
+	position: absolute;
+	right: 10px;
+	width: 58px;
+	height: 38px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 40px;
+	border: 1px solid #afafaf;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.task .task-status.finished {
+	color: #666;
+	text-shadow: 1px 1px #fff;
+	background-color: #d1d1d1;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #eee), color-stop(1, #d1d1d1));
+	cursor: no-drop;
+}
+
+.task .task-status.checking {
+	color: #fff;
+	text-shadow: 1px 1px #666;
+	background-color: #666;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.5, #666), color-stop(1, #d1d1d1));
+}
+
+.task .task-status.ongoing {
+	color: #fff;
+	text-shadow: 1px 1px #666;
+	background-color: #20850D;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #20850D), color-stop(1, #95F35F));
+}

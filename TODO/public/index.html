@@ -29,12 +29,9 @@
 
 	<!-- Javascript templates for backbone view -->
 	<script type="text/template" id="infoBar-template">
-		/*
-		 * TagName: div, ClassName: container bg-black, id:info-sidebar
-		 */
 		<div class="user-info">
 			<div class="user-avatar fl">
-				<img src="<%= avatar_url" alt="avatar">
+				<img src="<%= avatar_url %>" alt="avatar">
 			</div>
 			<div class="user-resume fl">
 				<p class="bold text-white fs20"><%= username %></p>
@@ -50,35 +47,23 @@
 
 			<div class="scroller" id="project-scroller">
 				<ul class="ul-noListStyle project-list text-white fs18" id="project-list">
-					// project items will be added here
-					<li>Loiter项目管理</li>
-					<li>黄埔军校可视化方案</li>
-					<li>Yanis Net品牌包装计划</li>
-					<li>Holly Shit项目</li>
-					<li>大学生酸梅计划</li>
 				</ul>
 			</div>
 		</div>
 	</script>
 
 	<script type="text/template" id="msgBar-template">
-		/*
-		 * TagName: div, ClassName: container bg-black, id:msg-sidebar
-		 */
 		<div class="msg-banner banner">
 			<div class="fl indent15 text-grey fs20">消息</div>
 		</div>
 		<div class="scroller" id="msg-scroller">
 			<ul class="ul-noListStyle msg-list" id="msg-list">
-				// msg view will be appended here
+
 			</ul>
 		</div>
 	</script>
 
 	<script type="text/template" id="msg-template">
-		/*
-		 * TagName: li, id:msg-"MsgId"
-		 */
 		<div class="msg">
 			<p>
 				<span class="msg-proj fs18 text-white"><%= project_name %></span>
@@ -90,47 +75,35 @@
 	</script>
 
 	<script type="text/template" id="main-template">
-		/*
-		 * TagName: div, ClassName: container bg-black, id:main
-		 */
 		<div class="scroller" id="main-scroll">
 			<ul class="ul-noListStyle main-list" id="main-list">
 				<li>
 					<div class="box" id="project-info">
 						<div class="project-process fl"></div>
 						<div class="project-detail fl">
-							<p class="project-name bold fs18"><%= project_name</p>
+							<p class="project-name bold fs18"><%= project_name %></p>
 							<p class="project-leader"><%= project_manager %></p>
 							<p class="project-intro"><%= project_description %></p>
 						</div>
 					</div>
 				</li>
-				
-				// stages view will be added here
 			</ul>
 		</div>
 	</script>
 
 	<script type="text/template" id="stage-template">
-		/*
-		 * TagName: li
-		 */
 		<div class="box stage">
 			<div class="stage-banner">
-				<div class="bold fs18 fl">第<%= stage_order %>阶段</div>
+				<div class="bold fs18 fl">第<%= order %>阶段</div>
 				<div class="bold fs20 fr task-adder">+</div>
 			</div>
 			
 			<ul class="ul-noListStyle task-list" id="task-list">
-				// task views will be appended here
 			</ul>
 		</div>
 	</script>
 
 	<script type="text/template" id="task-template">
-		/*
-		 * TagName: li
-		 */
 		<div class="task">
 			<div class="task-avatar">
 				<div class="circle-frame">
@@ -144,11 +117,17 @@
 					<span class="task-duetiime"><%= end_time %>/<%= end_date %></span>
 				</p>
 			</div>
-			<div class="task-status finished">
+			<div class="task-status <% switch (status) {
+						case "finished" : %>finished<% break;
+						case "ongoing"  : %>ongoing<% break;
+						case "checking" : %>checking<% break;
+						default:          %>finished<%
+					}
+				 %>">
 				<% switch (status) {
-						case "finished" : %>已完成<%
-						case "ongoing"  : %>进行中<%
-						case "checking" : %>审核中<%
+						case "finished" : %>已完成<% break;
+						case "ongoing"  : %>进行中<% break;
+						case "checking" : %>审核中<% break;
 						default:          %>不可用<%
 					}
 				 %>
@@ -163,9 +142,9 @@
 	<script src="javascripts/components/iscroll.js"></script>
 
 	<!-- js files of backbone parts -->
-	<script src="javascripts/models.js"></script>
-	<script src="javascripts/views.js"></script>
-	<script src="javascripts/routers.js"></script>
+	<script src="javascripts/models/models.js"></script>
+	<script src="javascripts/views/views.js"></script>
+	<script src="javascripts/routers/router.js"></script>
 
 	<!-- main js file -->
 	<script src="javascripts/app.js"></script>

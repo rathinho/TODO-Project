@@ -255,3 +255,7 @@ img {
 	background-color: #20850D;
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #20850D), color-stop(1, #95F35F));
 }
+
+#main {
+	z-index: 100;
+}

@@ -42,7 +42,9 @@
 		<div class="project-frame">
 			<div class="project-banner banner">
 				<div class="fl indent15 text-grey fs20">我的项目</div>
-				<div class="project-adder fr fs20 text-white">+</div>
+				<% if (priority >= 1) { %>
+					<div class="project-adder fr fs20 text-white" id="project-adder">+</div>
+				<% } %>
 			</div>
 
 			<div class="scroller" id="project-scroller">
@@ -95,7 +97,9 @@
 		<div class="box stage">
 			<div class="stage-banner">
 				<div class="bold fs18 fl">第<%= order %>阶段</div>
-				<div class="bold fs20 fr task-adder">+</div>
+				<% if (priority >= 1) { %>
+					<div class="bold fs20 fr task-adder">+</div>
+				<% } %>
 			</div>
 			
 			<ul class="ul-noListStyle task-list" id="task-list">
@@ -113,7 +117,7 @@
 			<div class="task-info">
 				<p class="task-name bold"><%= task_name %></p>
 				<p class="fs12">
-					<span class="task-starttime"><%= start_time %>/<%= start_date %></span>
+					<span class="task-starttime"><%= start_time %>/<%= start_date %>  -  </span>
 					<span class="task-duetiime"><%= end_time %>/<%= end_date %></span>
 				</p>
 			</div>

@@ -218,6 +218,131 @@
 				}, 200);					
 			}		
 		});
+
+		App.testData = {
+			user: {
+				avatar_url: "images/default.png",
+				username: "Rathinho",
+				position: "前端开发工程师",
+				priority: 1
+			},
+
+			projectA: {
+				project_name: "Loiter项目管理",
+				project_manager: "Rathinho",
+				project_description: "基于微信平台的公司项目管理移动客户端"
+			},
+
+			projectB: {
+				project_name: "大学生酸梅计划",
+				project_manager: "温俊强",
+				project_description: "吃酸莓"
+			},
+
+			projectC: {
+				project_name: "黄埔军校可视化方案",
+				project_manager: "魏志华",
+				project_description: "黄埔军校可视化方案"
+			},
+
+			projectD: {
+				project_name: "Yanis Net品牌包装计划",
+				project_manager: "王伟雄",
+				project_description: "Yanis Net品牌包装计划"
+			},
+
+			projectE: {
+				project_name: "Holly Shit项目",
+				project_manager: "鸡鸡",
+				project_description: "Holly Shit项目"
+			},
+
+			stageA: {
+				order: "一"
+			},
+
+			stageB: {
+				order: "二"
+			},
+
+			stageC: {
+				order: "三"
+			},
+
+			taskA: {
+				avatar_url:	"images/default.png",
+				end_time:	"12:30",
+				end_date:	"3月21日",
+				start_time:	"12:34",
+				start_date:	"3月18日",
+				status:		"finished",
+				task_name:	"主要功能设计"
+			},
+
+			taskB: {
+				avatar_url:	"images/default.png",
+				end_time:	"15:30",
+				end_date:	"4月11日",
+				start_time:	"16:35",
+				start_date:	"3月28日",
+				status:		"ongoing",
+				task_name:	"界面优化"
+			},
+
+			taskC: {
+				avatar_url:	"images/default.png",
+				end_time:	"10:30",
+				end_date:	"3月22日",
+				start_time:	"18:30",
+				start_date:	"3月15日",
+				status:		"checking",
+				task_name:	"需求文档"
+			},
+
+			msgA: {
+				project_name:	"Loiter项目管理",
+				task_name:		"主要功能设计",
+				msg_content:	"快一点啊艹",
+				msg_time:		"22:23/4月10日"
+			},
+
+			msgB: {
+				project_name:	"Loiter项目管理",
+				task_name:		"需求文档",
+				msg_content:	"看懂了没给点反馈",
+				msg_time:		"22:25/4月10日"
+			}
+			
+				
+				// App.user = new App.User(App.testData.user);
+				// App.projectA = new App.Project(App.testData.projectA);
+				// App.projectB = new App.Project(App.testData.projectB);
+				// App.projectC = new App.Project(App.testData.projectC);
+				// App.projectD = new App.Project(App.testData.projectD);
+				// App.projectE = new App.Project(App.testData.projectE);
+				// App.stageA = new App.Stage(App.testData.stageA);
+				// App.stageB = new App.Stage(App.testData.stageB);
+				// App.stageC = new App.Stage(App.testData.stageC);
+				// App.taskA = new App.Task(App.testData.taskA);
+				// App.taskB = new App.Task(App.testData.taskB);
+				// App.taskC = new App.Task(App.testData.taskC);
+
+				// App.msgA = new App.Msg(App.testData.msgA);
+				// App.msgB = new App.Msg(App.testData.msgB);
+			
+				// App.taskSet = new App.TaskSet([App.taskA, App.taskB, App.taskC]);
+				// App.stageA.set('taskSet', App.taskSet);
+
+				// App.stageSet = new App.StageSet([App.stageA, App.stageB, App.stageC]);
+				// App.projectA.set('stageSet', App.stageSet);
+
+				// App.projectSet = new App.ProjectSet([App.projectA, App.projectB, App.projectC, App.projectD, App.projectE]);
+				// App.msgSet = new App.MsgSet([App.msgA, App.msgB]);
+				// App.user.set('projectSet', App.projectSet);
+				// App.user.set('msgSet', App.msgSet);
+
+				// console.log(App.user.toJSON());
+		};
 	</script>
 </body>
 </html>

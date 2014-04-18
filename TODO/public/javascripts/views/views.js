@@ -10,8 +10,6 @@ var App = App || {};
 App.TaskView = Backbone.View.extend({
 	tagName: "li",
 
-	id: "task-",
-
 	template: _.template($("#task-template").html()),
 
 	events: {
@@ -19,6 +17,7 @@ App.TaskView = Backbone.View.extend({
 	},
 
 	initialize: function() {
+		this.model.set("priority", App.user.get("priority"));
 		this.listenTo(this.model, "change", this.render);
 	},
 
@@ -35,8 +34,6 @@ App.TaskView = Backbone.View.extend({
 App.StageView = Backbone.View.extend({
 	tagName: "li",
 
-	id: "stage-",
-
 	template: _.template($("#stage-template").html()),
 
 	events: {
@@ -44,6 +41,7 @@ App.StageView = Backbone.View.extend({
 	},
 
 	initialize: function() {
+		this.model.set("priority", App.user.get("priority"));
 		this.listenTo(this.model, "change", this.render);
 	},
 
@@ -59,8 +57,6 @@ App.StageView = Backbone.View.extend({
 
 App.MsgView = Backbone.View.extend({
 	tagName: "li",
-
-	id: "msg-",
 
 	template: _.template($("#msg-template").html()),
 
@@ -98,6 +94,11 @@ App.LeftSidebarView = App.InfoBarView = Backbone.View.extend({
 
 	template: _.template($("#infoBar-template").html()),
 
+	events: {
+		"tap .project-item": "renderProject",
+		"tap #project-adder": "addProject"
+	},
+
 	initialize: function() {
 		this.listenTo(this.model, "change", this.render);
 	},
@@ -105,6 +106,24 @@ App.LeftSidebarView = App.InfoBarView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
 		return this;
+	},
+
+	renderProject: function(evt) {
+		var id = evt.srcElement.id;
+		var project = new App.Project();
+
+		// check cache
+		if (App.projectSet.get(id)) {
+			App.renderUtil.renderMain(App.projectSet.get(id), true);
+		} else {
+			project.getProject(id, function() {
+				App.renderUtil.renderMain(project, true);
+			});
+		}
+	},
+
+	addProject: function() {
+		
 	}
 });
 

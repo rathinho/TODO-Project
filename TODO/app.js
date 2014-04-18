@@ -2,10 +2,15 @@
  * Module dependencies.
  */
 
+// default port
+var defaultPort = 3000;
+
 // include essential modules
 var express = require('express'),
 	http = require('http'),
-	path = require('path');
+	path = require('path'),
+	user = require('./routes/user'),
+	project = require('./routes/project');
 
 // connect to database
 var db = require('mongoskin').db('mongodb://localhost/todo');
@@ -17,7 +22,7 @@ var db = require('mongoskin').db('mongodb://localhost/todo');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || defaultPort);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -40,3 +45,18 @@ app.get('/', function(req, res) {
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+// RESTFUL API
+app.get("/user", user.getUserList(db));
+app.get("/user/:id", user.getUser(db));
+app.post("/user", user.addUser(db));
+app.delete("/user/:id", user.deleteUser(db));
+
+app.get("/project", project.getProjectList(db));
+app.get("/project/:id", project.getProject(db));
+app.get("/project/user/:uid", project.getProjectListByUid(db));
+app.post("/project", project.addProject(db));
+app.delete("/project/:id", project.deleteProject(db));
+
+app.post("/project/addstage/:pid", project.addStage(db));

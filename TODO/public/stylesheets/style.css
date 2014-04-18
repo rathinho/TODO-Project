@@ -218,7 +218,7 @@ img {
 }
 
 .task .task-info .task-duetiime {
-	color: #9eb627;
+	color: #20B426;
 }
 
 .task .task-status {
@@ -246,14 +246,14 @@ img {
 	color: #fff;
 	text-shadow: 1px 1px #666;
 	background-color: #666;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.5, #666), color-stop(1, #d1d1d1));
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.5, #B1AAAA), color-stop(1, #666));
 }
 
 .task .task-status.ongoing {
 	color: #fff;
 	text-shadow: 1px 1px #666;
-	background-color: #20850D;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #20850D), color-stop(1, #95F35F));
+	background-color: #2C9219;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.3, #63D124), color-stop(1, #2C9219));
 }
 
 #main {

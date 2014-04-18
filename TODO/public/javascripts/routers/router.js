@@ -15,15 +15,43 @@ App.Router = Backbone.Router.extend({
 	wrapper: $("#wrapper"),
 
 	initialize: function() {
-
+		$.ajax({
+			url: "/project/addstage/p000000005",
+			type: "post",
+			data: {
+				"order": "二",
+				"taskSet": {
+					"0":{
+					"task_manager_id": "u0000002",
+					"avatar_url": "images\/wayzh.jpg",
+					"end_time": "12: 30",
+					"end_date": "3月21日",
+					"start_time": "12: 35",
+					"start_date": "3月18日",
+					"status": "ongoing",
+					"task_name": "killing u"
+				},
+				"1":{
+					"task_manager_id": "u0000002",
+					"avatar_url": "images\/wayzh.jpg",
+					"end_time": "12: 30",
+					"end_date": "3月21日",
+					"start_time": "12: 35",
+					"start_date": "3月18日",
+					"status": "ongoing",
+					"task_name": "killing u2"
+				}}
+			},
+			success: function(res) {
+				console.log(res);
+			}
+		})
 	},
 
 	index: function() {
-		this._initializeData(function() {
-
-		});
-
-		this._render().renderAll();
+		// this._hideWechatNavbar();
+		App.renderUtil = this._render();
+		this._initializeData(App.renderUtil.renderAll);
 	},
 
 	start: function() {
@@ -31,39 +59,25 @@ App.Router = Backbone.Router.extend({
 	},
 
 	_initializeData: function(callback) {
-		App.user = new App.User(App.testData.user);
-		App.projectA = new App.Project(App.testData.projectA);
-		App.projectB = new App.Project(App.testData.projectB);
-		App.projectC = new App.Project(App.testData.projectC);
-		App.projectD = new App.Project(App.testData.projectD);
-		App.projectE = new App.Project(App.testData.projectE);
-		App.stageA = new App.Stage(App.testData.stageA);
-		App.stageB = new App.Stage(App.testData.stageB);
-		App.stageC = new App.Stage(App.testData.stageC);
-		App.taskA = new App.Task(App.testData.taskA);
-		App.taskB = new App.Task(App.testData.taskB);
-		App.taskC = new App.Task(App.testData.taskC);
+		var uid = "u0000001";	// wait to add login module
 
-		App.msgA = new App.Msg(App.testData.msgA);
-		App.msgB = new App.Msg(App.testData.msgB);
-	
-		App.taskSet = new App.TaskSet([App.taskA, App.taskB, App.taskC]);
-		App.stageA.set('taskSet', App.taskSet);
+		App.user = new App.User();
+		App.user.fetch({
+			url: "/user/" + uid,
+			success: function() {
+				App.projectSet = new App.ProjectSet();
+				App.user.set('projectSet', App.projectSet);
 
-		App.stageSet = new App.StageSet([App.stageA, App.stageB, App.stageC]);
-		App.projectA.set('stageSet', App.stageSet);
-
-		App.projectSet = new App.ProjectSet([App.projectA, App.projectB, App.projectC, App.projectD, App.projectE]);
-		App.msgSet = new App.MsgSet([App.msgA, App.msgB]);
-		App.user.set('projectSet', App.projectSet);
-		App.user.set('msgSet', App.msgSet);
-
-		// console.log(App.user.toJSON());
+				App.initProject = new App.Project();
+				App.initProject.getProject(App.user.get("projectList")[1].id, callback);
+				console.log(App.user);
+			}
+		});
 	},
 
 	_render: function() {
 		var _this = this;
-		var views = {
+		App.views = {
 			mainView: null,
 			infoView: null,
 			msgView: null
@@ -75,57 +89,72 @@ App.Router = Backbone.Router.extend({
 			msgScroller: null
 		};
 
-		function renderCenter(model) {
-			views.mainView = new App.MainView({model: model});
-			_this.wrapper.append(views.mainView.render().el);
+		function renderCenter(model, update) {
+			if (App.views.mainView) {
+				App.views.mainView.remove();
+			}
 
-			App.projectA.get("stageSet").each(function(stage) {
-				var stageView = new App.StageView({model: stage});
-				views.mainView.$el.find("#main-list").append(stageView.render().el);
+			App.views.mainView = new App.MainView({model: model});
+			_this.wrapper.append(App.views.mainView.render().el);
 
-				if (stage.get('taskSet')) {
-					stage.get('taskSet').each(function(task) {
-						var taskView = new App.TaskView({model: task});
-						stageView.$el.find(".task-list").append(taskView.render().el);
-					});
-				}
-			});
+			if (model.get("stageSet")) {
+				model.get("stageSet").each(function(stage) {
+					var stageView = new App.StageView({model: stage, id: "stage-" + stage.cid});
+					App.views.mainView.$el.find("#main-list").append(stageView.render().el);
+
+					if (stage.get('taskSet')) {
+						stage.get('taskSet').each(function(task) {
+							var taskView = new App.TaskView({model: task, id: "task-" + task.cid});
+							stageView.$el.find(".task-list").append(taskView.render().el);
+						});
+					}
+				});
+			}
 
 			scroller.mainScroller = new iScroll("main-scroll", {vScrollbar: false});
+
+			if (update) {
+				resize();
+			}
 		}
 
 		function renderLeft() {
-			views.infoView = new App.InfoBarView({model: App.user});
-			_this.wrapper.append(views.infoView.render().el);
+			App.views.infoView = new App.InfoBarView({model: App.user});
+			_this.wrapper.append(App.views.infoView.render().el);
 
-			var nameList = App.user.get('projectSet').pluck('project_name');
-			var projectList = views.infoView.$el.find("#project-list");
+			var nameList = App.user.get('projectList');
+			var projectList = App.views.infoView.$el.find("#project-list");
 
-			nameList.forEach(function(projectName) {
-				projectList.append($("<li>"+projectName+"</li>"));
-			});
+			if (nameList) {
+				for (var i in nameList) {
+					projectList.append($("<li class=\"project-item\" id=\""+nameList[i].id+"\">"+nameList[i].name+"</li>"));
+				}
+			}
 
 			scroller.projectScroller = new iScroll("project-scroller", {vScrollbar: false});
 		}
 
 		function renderRight() {
-			views.msgView = new App.MsgBarView();
-			_this.wrapper.append(views.msgView.render().el);
+			App.views.msgView = new App.MsgBarView();
+			_this.wrapper.append(App.views.msgView.render().el);
 
-			var msgList = views.msgView.$el.find("#msg-list");
+			var msgList = App.views.msgView.$el.find("#msg-list");
 
-			App.user.get("msgSet").each(function(msg) {
-				var msgView = new App.MsgView({model: msg});
-				msgList.append(msgView.render().el);
-			});
+			if (App.user.get("msgSet")) {
+				App.user.get("msgSet").each(function(msg) {
+					var msgView = new App.MsgView({model: msg});
+					msgList.append(msgView.render().el);
+				});
+			}
+			
 
 			scroller.msgScroller = new iScroll("msg-scroller", {vScrollbar: false});
 		}
 
 		function resize() {
-			var left = views.infoView.$el,
-				right = views.msgView.$el,
-				main = views.mainView.$el;
+			var left = App.views.infoView.$el,
+				right = App.views.msgView.$el,
+				main = App.views.mainView.$el;
 
 			var width = parseInt(main.css('width'));
 
@@ -172,12 +201,13 @@ App.Router = Backbone.Router.extend({
 				}
 			});
 		}
+		
 
 		function renderAll() {
-			renderCenter(App.projectA);
+			renderCenter(App.initProject);
 			renderLeft();
 			renderRight();
-			resize();
+			resize();			
 		}
 
 		return {
@@ -186,5 +216,11 @@ App.Router = Backbone.Router.extend({
 			renderMsg: renderRight,
 			renderAll: renderAll
 		};
+	},
+
+	_hideWechatNavbar: function() {
+		document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+			WeixinJSBridge.call('hideToolbar');
+		});		
 	}
 });

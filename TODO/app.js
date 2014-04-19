@@ -49,14 +49,17 @@ http.createServer(app).listen(app.get('port'), function() {
 
 // RESTFUL API
 app.get("/user", user.getUserList(db));
-app.get("/user/:id", user.getUser(db));
+app.get("/user/:uid", user.getUser(db));
 app.post("/user", user.addUser(db));
-app.delete("/user/:id", user.deleteUser(db));
+app.put("/user/:uid", user.updateUser(db));
+app.delete("/user/:uid", user.deleteUser(db));
 
 app.get("/project", project.getProjectList(db));
-app.get("/project/:id", project.getProject(db));
+app.get("/project/:pid", project.getProject(db));
 app.get("/project/user/:uid", project.getProjectListByUid(db));
 app.post("/project", project.addProject(db));
-app.delete("/project/:id", project.deleteProject(db));
+app.put("/project/:pid", project.updateProject(db));
+app.delete("/project/:pid", project.deleteProject(db));
 
 app.post("/project/addstage/:pid", project.addStage(db));
+app.post("/project/addtask/:pid", project.addTask(db));

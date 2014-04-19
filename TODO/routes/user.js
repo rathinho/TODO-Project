@@ -14,7 +14,7 @@ exports.getUserList = function(db) {
  */
 exports.getUser = function(db) {
 	return function(req, res) {
-		var uid = req.params["id"];
+		var uid = req.params["uid"];
 		db.collection('users').findOne({id: uid}, function(err, item) {
 			res.json(item);
 		});
@@ -27,7 +27,7 @@ exports.getUser = function(db) {
 exports.addUser = function(db) {
 	return function(req, res) {
 		db.collection('users').insert(req.body, function(err, result) {
-			res.send((err === null) ? { msg: '' } : { msg: err });
+			res.send((err === null) ? { msg: 'Add user successfully.' } : { msg: err });
 		});
 	};
 };
@@ -37,7 +37,10 @@ exports.addUser = function(db) {
  */
 exports.updateUser = function(db) {
 	return function(req, res) {
-		var uid = req.params["id"];
+		var uid = req.params["uid"];
+		db.collection('users').update({id: uid}, {$set: req.body}, function(err, result) {
+			res.send((result === 1) ? { msg: 'update user ' + uid + ' successfully.' } : { msg:'error: ' + err });
+		});
 	};
 };
 
@@ -46,9 +49,9 @@ exports.updateUser = function(db) {
  */
 exports.deleteUser = function(db) {
 	return function(req, res) {
-		var userToDelete = req.params.id;
-		db.collection('users').removeById(userToDelete, function(err, result) {
-			res.send((result === 1) ? { msg: '' } : { msg:'error: ' + err });
+		var userToDelete = req.params['uid'];
+		db.collection('users').remove({id: userToDelete}, function(err, result) {
+			res.send((result === 1) ? { msg: 'Remove user ' + uid + ' successfully.' } : { msg:'error: ' + err });
 		});
 	};
 };

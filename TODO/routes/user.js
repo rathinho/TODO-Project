@@ -4,7 +4,13 @@
 exports.getUserList = function(db) {
 	return function(req, res) {
 		db.collection('users').find().toArray(function(err, items) {
-			res.json(items);
+			var nameList = [];
+
+			items.forEach(function(i) {
+				nameList.push(i.username);
+			});
+			
+			res.json(nameList);
 		});
 	};
 };
@@ -51,7 +57,7 @@ exports.deleteUser = function(db) {
 	return function(req, res) {
 		var userToDelete = req.params['uid'];
 		db.collection('users').remove({id: userToDelete}, function(err, result) {
-			res.send((result === 1) ? { msg: 'Remove user ' + uid + ' successfully.' } : { msg:'error: ' + err });
+			res.send((result === 1) ? { msg: 'Remove user ' + userToDelete + ' successfully.' } : { msg:'error: ' + err });
 		});
 	};
 };

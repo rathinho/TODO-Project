@@ -15,37 +15,7 @@ App.Router = Backbone.Router.extend({
 	wrapper: $("#wrapper"),
 
 	initialize: function() {
-		$.ajax({
-			url: "/project/addstage/p000000005",
-			type: "post",
-			data: {
-				"order": "二",
-				"taskSet": {
-					"0":{
-					"task_manager_id": "u0000002",
-					"avatar_url": "images\/wayzh.jpg",
-					"end_time": "12: 30",
-					"end_date": "3月21日",
-					"start_time": "12: 35",
-					"start_date": "3月18日",
-					"status": "ongoing",
-					"task_name": "killing u"
-				},
-				"1":{
-					"task_manager_id": "u0000002",
-					"avatar_url": "images\/wayzh.jpg",
-					"end_time": "12: 30",
-					"end_date": "3月21日",
-					"start_time": "12: 35",
-					"start_date": "3月18日",
-					"status": "ongoing",
-					"task_name": "killing u2"
-				}}
-			},
-			success: function(res) {
-				console.log(res);
-			}
-		})
+		
 	},
 
 	index: function() {
@@ -61,9 +31,8 @@ App.Router = Backbone.Router.extend({
 	_initializeData: function(callback) {
 		var uid = "u0000001";	// wait to add login module
 
-		App.user = new App.User();
+		App.user = new App.User({id: uid});
 		App.user.fetch({
-			url: "/user/" + uid,
 			success: function() {
 				App.projectSet = new App.ProjectSet();
 				App.user.set('projectSet', App.projectSet);
@@ -99,7 +68,7 @@ App.Router = Backbone.Router.extend({
 
 			if (model.get("stageSet")) {
 				model.get("stageSet").each(function(stage) {
-					var stageView = new App.StageView({model: stage, id: "stage-" + stage.cid});
+					var stageView = new App.StageView({model: stage, id: "stage-" + stage.cid, pid: model.get('id')});
 					App.views.mainView.$el.find("#main-list").append(stageView.render().el);
 
 					if (stage.get('taskSet')) {
@@ -123,11 +92,12 @@ App.Router = Backbone.Router.extend({
 			_this.wrapper.append(App.views.infoView.render().el);
 
 			var nameList = App.user.get('projectList');
+			var priority = App.user.get('priority');
 			var projectList = App.views.infoView.$el.find("#project-list");
 
 			if (nameList) {
 				for (var i in nameList) {
-					projectList.append($("<li class=\"project-item\" id=\""+nameList[i].id+"\">"+nameList[i].name+"</li>"));
+					projectList.append($("<li class=\"project-item\" id=\""+nameList[i].id+"\">"+nameList[i].name + (priority === 1 ? "<span class=\"config\">" : "")+ "</span></li>"));
 				}
 			}
 
@@ -135,20 +105,12 @@ App.Router = Backbone.Router.extend({
 		}
 
 		function renderRight() {
-			App.views.msgView = new App.MsgBarView();
+			App.views.msgView = new App.MsgBarView({model: App.user});
 			_this.wrapper.append(App.views.msgView.render().el);
 
-			var msgList = App.views.msgView.$el.find("#msg-list");
-
-			if (App.user.get("msgSet")) {
-				App.user.get("msgSet").each(function(msg) {
-					var msgView = new App.MsgView({model: msg});
-					msgList.append(msgView.render().el);
-				});
-			}
-			
-
-			scroller.msgScroller = new iScroll("msg-scroller", {vScrollbar: false});
+			App.views.msgView.loadMsg(function() {
+				scroller.msgScroller = new iScroll("msg-scroller", {vScrollbar: false});
+			});		
 		}
 
 		function resize() {

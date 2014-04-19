@@ -7,6 +7,10 @@ img {
 	height: 100%;
 }
 
+label {
+	vertical-align: top;
+}
+
 .wrapper {
 	overflow: hidden;
 	position: absolute;
@@ -103,6 +107,7 @@ img {
 }
 
 .project-list li {
+	position: relative;
 	height: 50px;
 	padding-left: 15px;
 	line-height: 50px;
@@ -113,6 +118,17 @@ img {
 
 .project-list li:active {
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #3C434B), color-stop(1, #131B22));
+}
+
+.project-list li .config {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	background-image: url(../images/options.png);
+	background-size: 100% 100%;
 }
 
 /* 
@@ -129,6 +145,18 @@ img {
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0.97, #3C434B), color-stop(1, #131B22));
 }
 
+.msg-banner .sender {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	background-image: url(../images/email.png);
+	background-size: 100% 100%;
+	cursor: pointer;
+}
+
 /*
  *	main container style
  */
@@ -141,14 +169,29 @@ img {
 }
 
 .project-process {
-	width: 35%;
+	width: 25%;
 	height: 100%;
 	padding: 10px 2%;
-	background-color: red;
+}
+
+.project-process .stage-adder {
+	display: block;
+	height: 30px;
+	vertical-align: top;
+	line-height: 30px;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	background-color: #2898CC;
+	cursor: pointer;
+}
+
+.project-process .stage-adder:active {
+	background-color: #95BFD3;
 }
 
 .project-detail {
-	width: 57%;
+	width: 67%;
 	padding: 10px 2%;
 }
 
@@ -258,4 +301,110 @@ img {
 
 #main {
 	z-index: 100;
+}
+
+.modal {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10001;
+}
+
+.modal .frame-mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	opacity: 0.5;
+}
+
+.modal .dialog {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 80%;
+	height: 210px;
+	padding: 10px 1%;
+	margin: -105px 0 0 -41%;
+	text-align: center;
+	border-radius: 10px;
+	background-color: #fff;
+}
+
+.modal .dialog-item {
+	text-align: center;
+	margin: 20px auto;
+}
+
+.modal .btn-group {
+	width: 250px;
+	margin: 10px auto;
+}
+
+.modal .btn-group .btn {
+	display: inline-block;
+	width: 110px;
+	padding: 5px 0;
+	margin: 0 6px;
+	text-align: center;
+	color: white;
+	background-color: #A5A5A5;
+	border-radius: 5px;	
+	cursor: pointer;
+}
+
+.modal .btn-group .btn.btn-primary {
+	background-color: #2898CC;
+}
+
+.modal input, .modal select, .modal textarea {
+	width: 160px;
+	padding: 2px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.modal select {
+	width: 167px;
+}
+
+.modal input.medium {
+	width: 40px;
+}
+
+
+.modal input.short {
+	width: 20px;
+}
+
+.modal .dropdown {
+	position: absolute;
+	width: 80%;
+	height: 152px;
+	top: 50%;
+	left: 50%;
+	margin: -76px 0 0 -40%;
+	background-color: #fff;
+}
+
+.modal .dropdown .dropdown-item {
+	height: 50px;
+	color: #2898CC;
+	line-height: 50px;
+	text-align: center;
+	border-bottom: 1px solid #2898CC;
+	cursor: pointer;
+}
+
+.modal .dropdown .dropdown-item:last-child {
+	border-bottom: none;
+}
+
+.modal .dropdown .dropdown-item:active {
+	color: #fff;
+	background-color: #2898CC;
 }

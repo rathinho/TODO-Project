@@ -26,7 +26,6 @@
 
 	</div>
 
-
 	<!-- Javascript templates for backbone view -->
 	<script type="text/template" id="infoBar-template">
 		<div class="user-info">
@@ -56,7 +55,7 @@
 
 	<script type="text/template" id="msgBar-template">
 		<div class="msg-banner banner">
-			<div class="fl indent15 text-grey fs20">消息</div>
+			<div class="fl indent15 text-grey fs20">消息<span class="sender" id="sender"></span></div>
 		</div>
 		<div class="scroller" id="msg-scroller">
 			<ul class="ul-noListStyle msg-list" id="msg-list">
@@ -66,13 +65,14 @@
 	</script>
 
 	<script type="text/template" id="msg-template">
+		<% var date = new Date(new Number(timestamp)) %>
 		<div class="msg">
 			<p>
-				<span class="msg-proj fs18 text-white"><%= project_name %></span>
-				<span class="msg-task fs14 text-grey">/<%= task_name %></span>
+				<span class="msg-proj fs18 text-white">来自：</span>
+				<span class="msg-task fs14 text-grey"><%= from %></span>
 			</p>
-			<p class="msg-content fs16 text-grey"><%= msg_content %></p>
-			<p class="msg-date fs14 text-grey text-right"><%= msg_time %></p>
+			<p class="msg-content fs16 text-grey"><%= content %></p>
+			<p class="msg-date fs14 text-grey text-right"><%= date.getMonth() + 1%>月<%= date.getDate()%>日 <%= date.getHours() %>:<%= date.getMinutes()%></p>
 		</div>
 	</script>
 
@@ -80,12 +80,14 @@
 		<div class="scroller" id="main-scroll">
 			<ul class="ul-noListStyle main-list" id="main-list">
 				<li>
-					<div class="box" id="project-info">
-						<div class="project-process fl"></div>
+					<div class="box" id="project-info">						
 						<div class="project-detail fl">
 							<p class="project-name bold fs18"><%= project_name %></p>
 							<p class="project-leader"><%= project_manager %></p>
 							<p class="project-intro"><%= project_description %></p>
+						</div>
+						<div class="project-process fl">
+							<span class="stage-adder" id="stage-adder">添加阶段</span>
 						</div>
 					</div>
 				</li>
@@ -108,6 +110,18 @@
 	</script>
 
 	<script type="text/template" id="task-template">
+		<% 	var statusContent, _status;
+			switch (status) {
+				case "finished" : _status = "finished"; statusContent = "已完成"; break;
+				case "ongoing"  : _status = "ongoing"; statusContent = "进行中"; break;
+				case "checking" : _status = "checking"; statusContent = "审核中"; break;
+				default:          _status = "ongoing"; statusContent = "进行中";
+			}
+
+			var start_time = new Date(new Number(start_timestamp));
+			var end_time = new Date(new Number(end_timestamp));
+		%>
+
 		<div class="task">
 			<div class="task-avatar">
 				<div class="circle-frame">
@@ -117,24 +131,68 @@
 			<div class="task-info">
 				<p class="task-name bold"><%= task_name %></p>
 				<p class="fs12">
-					<span class="task-starttime"><%= start_time %>/<%= start_date %>  -  </span>
-					<span class="task-duetiime"><%= end_time %>/<%= end_date %></span>
+					<span class="task-starttime"><%= start_time.getHours() %>:<%= start_time.getMinutes() %>/<%= start_time.getMonth() %>月<%= start_time.getDate() %>日  -  </span>
+					<span class="task-duetiime"><%= end_time.getHours() %>:<%= end_time.getMinutes() %>/<%= end_time.getMonth() %>月<%= end_time.getDate() %>日</span>
 				</p>
 			</div>
-			<div class="task-status <% switch (status) {
-						case "finished" : %>finished<% break;
-						case "ongoing"  : %>ongoing<% break;
-						case "checking" : %>checking<% break;
-						default:          %>finished<%
-					}
-				 %>">
-				<% switch (status) {
-						case "finished" : %>已完成<% break;
-						case "ongoing"  : %>进行中<% break;
-						case "checking" : %>审核中<% break;
-						default:          %>不可用<%
-					}
-				 %>
+			<div class="task-status <%= _status %>">
+				<span><%= statusContent %></span>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="dialog-template">
+		<div class="frame-mask"></div>
+		<div class="dialog" id="project-dialog">
+			<div class="dialog-item"><label>项目名称：</label><input name="project_name" required></div>
+			<div class="dialog-item"><label>项目经理：</label><select name="project_manager" required></select></div>
+			<div class="dialog-item"><label>项目描述：</label><input name="project_description" required></div>
+			<div class="btn-group">
+				<div class="btn btn-primary" id="submit">确定</div>
+				<div class="btn" id="cancel">取消</div>
+			</div>
+		</div>
+		<div class="dialog hide" id="task-dialog">
+			<div class="dialog-item"><label>任务名称：</label><input name="task_name" required></div>
+			<div class="dialog-item"><label>任务组长：</label><select name="task_manager" required></select></div>
+			<div class="dialog-item"><label>开始时间：</label>
+				<input class="medium" name="starttime_year" required>年
+				<input class="short" name="starttime_month" required>月
+				<input class="short" name="starttime_date" required>日
+				<input class="short" name="starttime_hour" required>时
+				
+			</div>
+			<div class="dialog-item"><label>结束时间：</label>
+				<input class="medium" name="endtime_year" required>年
+				<input class="short" name="endtime_month" required>月
+				<input class="short" name="endtime_date" required>日
+				<input class="short" name="endtime_hour" required>时
+				
+			</div>
+			<div class="btn-group">
+				<div class="btn btn-primary" id="submit">确定</div>
+				<div class="btn" id="cancel">取消</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="dropdown-template">
+		<div class="frame-mask"></div>
+		<div class="dropdown">
+			<div class="dropdown-item"><div class="btn btn-primary" id="modify">更改</div></div>
+			<div class="dropdown-item"><div class="btn btn-primary" id="delete">删除</div></div>
+			<div class="dropdown-item"><div class="btn btn-primary" id="cancel">取消</div></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="sender-template">
+		<div class="frame-mask"></div>
+		<div class="dialog">
+			<div class="dialog-item"><label>收件人：</label><select name="receiver" required></select></div>
+			<div class="dialog-item"><label>内容&nbsp&nbsp&nbsp：</label><textarea name="content" required></textarea></div>
+			<div class="btn-group">
+				<div class="btn btn-primary" id="submit">确定</div>
+				<div class="btn" id="cancel">取消</div>
 			</div>
 		</div>
 	</script>

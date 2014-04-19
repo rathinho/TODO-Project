@@ -10,6 +10,7 @@ var express = require('express'),
 	http = require('http'),
 	path = require('path'),
 	user = require('./routes/user'),
+	msg = require('./routes/msg'),
 	project = require('./routes/project');
 
 // connect to database
@@ -52,14 +53,24 @@ app.get("/user", user.getUserList(db));
 app.get("/user/:uid", user.getUser(db));
 app.post("/user", user.addUser(db));
 app.put("/user/:uid", user.updateUser(db));
-app.delete("/user/:uid", user.deleteUser(db));
+app.del("/user/:uid", user.deleteUser(db));
 
 app.get("/project", project.getProjectList(db));
 app.get("/project/:pid", project.getProject(db));
 app.get("/project/user/:uid", project.getProjectListByUid(db));
 app.post("/project", project.addProject(db));
 app.put("/project/:pid", project.updateProject(db));
-app.delete("/project/:pid", project.deleteProject(db));
+app.del("/project/:pid", project.deleteProject(db));
 
-app.post("/project/addstage/:pid", project.addStage(db));
-app.post("/project/addtask/:pid", project.addTask(db));
+app.get("/project/:pid/:sid", project.getStage(db));
+app.post("/project/:pid", project.addStage(db));
+app.put("/project/:pid/:sid", project.updateStage(db));
+app.del("/project/:pid/:sid", project.deleteStage(db));
+
+app.get("/project/:pid/:sid/:tid", project.getTask(db));
+app.post("/project/:pid/:sid", project.addTask(db));
+app.put("/project/:pid/:sid/:tid", project.updateTask(db));
+app.del("/project/:pid/:sid/:tid", project.deleteTask(db));
+
+app.get("/msg/:uid", msg.getMsgList(db));
+app.post("/msg", msg.addMsg(db));

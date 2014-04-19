@@ -9,6 +9,7 @@ var App = App || {};
 
 App.Task = Backbone.Model.extend({
 	defaults: {
+		id: "",
 		avatar_url:	"",
 		end_time:	"",
 		end_date:	"",
@@ -18,30 +19,32 @@ App.Task = Backbone.Model.extend({
 		task_name:	""
 	},
 
-	url: "",
+	url: "/project/",
 
 	initialize: function() {
 		var _this = this;
+	},
 
-		_this.on("change", function() {
-			// _this.save();
-		});	
+	updateChange: function(pid, sid) {
+
 	}
 });
 
 App.Stage = Backbone.Model.extend({
 	defaults: {
+		id: "",
 		order:		"",
-		taskSet:	null
+		taskSet:	[]
 	}
 });
 
 App.Project = Backbone.Model.extend({
 	defaults: {
+		id: "",
 		project_name:			"",
 		project_manager:		"",
 		project_description:	"",
-		stageSet:				null
+		stageSet:				[]
 	},
 
 	getProject: function(id, callback) {
@@ -83,22 +86,25 @@ App.Project = Backbone.Model.extend({
 });
 
 App.User = Backbone.Model.extend({
+	urlRoot: "/user/",
+
 	defaults: {
+		id: "",
 		avatar_url: "",
 		username:	"",
 		position:	"",
 		priority:	0,
-		projectSet: null,
-		msgSet:		null
+		projectSet: [],
 	}
 });
 
 App.Msg = Backbone.Model.extend({
 	defaults: {
-		project_name:	"",
-		task_name:		"",
-		msg_content:	"",
-		msg_time:		""
+		id:			"",
+		from:		"",
+		to:			"",
+		content:	"",
+		timestamp:	""
 	}
 });
 

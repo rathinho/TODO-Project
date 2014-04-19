@@ -45,8 +45,24 @@ exports.getProject = function(db) {
  */
 exports.addProject = function(db) {
 	return function(req, res) {
-		db.collection('projects').insert(req.body, function(err, result) {
-			res.send((err === null) ? { msg: 'Add project successfully' } : { msg: err });
+		var projectDB = db.collection('projects');
+		projectDB.count(function(err, count) {
+
+			db.collection('users').findOne({username: req.body.project_manager}, function(err, user) {
+				var project = {
+					"id": "p00000000" + (count + 1),
+					"project_name" : req.body.project_name,
+					"project_description" : req.body.project_description,
+					"project_manager": req.body.project_manager,
+					"project_manager_id": user.id,
+					"stageSet": [],
+					"userSet": [],
+				};
+
+				projectDB.insert(project, function(err, result) {
+					res.send((err === null) ? { msg: 'Add project successfully' , code: 1} : { msg: err , code: 0});
+				});
+			});
 		});
 	};
 };
@@ -58,7 +74,7 @@ exports.updateProject = function(db) {
 	return function(req, res) {
 		var pid = req.params["pid"];
 		db.collection('projects').update({id: pid}, {$set: req.body}, function(err, result) {
-			res.send((err === null) ? { msg: 'Update project ' + pid + ' successfully' } : { msg: err });
+			res.send((err === null) ? { msg: 'Update project ' + pid + ' successfully' , code: 1} : { msg: err , code: 0});
 		});
 	};
 };
@@ -68,9 +84,9 @@ exports.updateProject = function(db) {
  */
 exports.deleteProject = function(db) {
 	return function(req, res) {
-		var projectToDelete = req.params.id;
-		db.collection('projects').removeById(projectToDelete, function(err, result) {
-			res.send((err === null) ? { msg: 'Delete project ' + pid + ' successfully' } : { msg: err });
+		var projectToDelete = req.params["pid"];
+		db.collection('projects').remove({id: projectToDelete}, function(err, result) {
+			res.send((err === null) ? { msg: 'Delete project ' + projectToDelete + ' successfully', code: 1 } : { msg: err, code: 0 });
 		});
 	};
 };
@@ -82,9 +98,14 @@ exports.deleteProject = function(db) {
 exports.addStage = function(db) {
 	return function(req, res) {
 		var pid = req.params["pid"];
+		var stage = {
+			id: req.body.id,
+			order: req.body.order,
+			taskSet: []
+		};
 
-		db.collection('projects').update({id: pid}, {$addToSet: {stageSet: req.body}}, function(err, result) {
-			res.send((err === null) ? { msg: 'Update Stage successfully.' } : { msg: err });
+		db.collection('projects').update({id: pid}, {$addToSet: {stageSet: stage}}, function(err, result) {
+			res.send((err === null) ? { msg: 'Update Stage successfully.', code: 1 } : { msg: err, code: 0 });
 		});
 	};
 };
@@ -121,14 +142,35 @@ exports.deleteStage = function(db) {
  */
 exports.addTask = function(db) {
 	return function(req, res) {
-		var pid = req.params["pid"];
+		var pid = req.params["pid"],
+			sid = req.params["sid"];
 
 		db.collection('projects').findOne({id: pid}, function(err, item) {
-			res.json(item.stageSet[0]);
+			item.stageSet.forEach(function(i) {
+				if (i.id == sid) {
+					db.collection('users').findOne({username: req.body.task_manager_name}, function(err, user) {
+						var task = {
+							id: req.body.id,
+							task_manager_name: req.body.task_manager_name,
+							task_name: req.body.task_name,
+							avatar_url: user.avatar_url,
+							task_manager_id: user.id,
+							end_timestamp: req.body.end_timestamp,
+							start_timestamp: req.body.start_timestamp,
+							status: "ongoing"
+						};
+
+						i.taskSet.push(task);
+
+						db.collection('projects').update({id: pid}, {$set: {stageSet: item.stageSet}}, function(err, result) {
+							res.send((err === null) ? { msg: 'Update task successfully.', code: 1 } : { msg: err, code: 0 });
+						});
+					});
+				} else {
+					return;
+				}
+			});
 		});
-		// db.collection('projects').update({id: pid}, {$addToSet: {stageSet: req.body}}, function(err, result) {
-		// 	res.send((err === null) ? { msg: 'Update task successfully.' } : { msg: err });
-		// });
 	};
 };
 

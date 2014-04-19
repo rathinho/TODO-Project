@@ -9,20 +9,21 @@ var App = App || {};
 
 App.Task = Backbone.Model.extend({
 	defaults: {
-		id: "",
-		avatar_url:	"",
-		end_time:	"",
-		end_date:	"",
-		start_time:	"",
-		start_date:	"",
-		status:		"",
-		task_name:	""
+		id: 			"",
+		avatar_url:		"",
+		end_timestamp:	"",
+		start_timestamp:"",
+		status:			"",
+		task_name:		""
 	},
 
 	url: "/project/",
 
 	initialize: function() {
 		var _this = this;
+		this.on('change', function() {
+			console.log(_this);
+		})
 	},
 
 	updateChange: function(pid, sid) {

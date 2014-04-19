@@ -73,7 +73,7 @@ App.Router = Backbone.Router.extend({
 
 					if (stage.get('taskSet')) {
 						stage.get('taskSet').each(function(task) {
-							var taskView = new App.TaskView({model: task, id: "task-" + task.cid});
+							var taskView = new App.TaskView({model: task, id: "task-" + task.cid, pid: model.get('id'), sid: stage.get('id')});
 							stageView.$el.find(".task-list").append(taskView.render().el);
 						});
 					}

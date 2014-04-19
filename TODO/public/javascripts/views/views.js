@@ -13,10 +13,12 @@ App.TaskView = Backbone.View.extend({
 	template: _.template($("#task-template").html()),
 
 	events: {
-		"click .task-status" : "changeStatus"
+		"tap .task-status" : "changeStatus"
 	},
 
-	initialize: function() {
+	initialize: function(opt) {
+		this.pid = opt.pid;
+		this.sid = opt.sid;
 		this.model.set("priority", App.user.get("priority"));
 		this.listenTo(this.model, "change", this.render);
 	},
@@ -27,7 +29,35 @@ App.TaskView = Backbone.View.extend({
 	},
 
 	changeStatus: function() {
+		var status = this.model.get('status');
+		var _this = this;
 
+		if (status === "ongoing") {
+			this.model.set('status', 'checking');
+		} else if (status === "checking") {
+			if (this.model.get('priority') === 1) {
+				this.model.set('status', 'finished');
+			}
+		}
+
+		var postUrl = "/project/" + _this.pid + "/" + _this.sid + "/" + _this.model.get('id');
+		$.ajax({
+			url: postUrl,
+
+			type: "PUT",
+
+			data: {
+				status: _this.model.get('status')
+			},
+
+			success: function(data) {
+				console.log(data);
+			},
+
+			error: function(err) {
+				console.log(err);
+			}
+		});
 	}
 });
 
@@ -37,7 +67,7 @@ App.StageView = Backbone.View.extend({
 	template: _.template($("#stage-template").html()),
 
 	events: {
-		"click .task-adder" : "addTask"
+		"tap .task-adder" : "addTask"
 	},
 
 	initialize: function(opt) {
@@ -82,7 +112,7 @@ App.RightSidebarView = App.MsgBarView = Backbone.View.extend({
 	id: "msg-sidebar",
 
 	events: {
-		"click #sender" : "send"
+		"tap #sender" : "send"
 	},
 
 	template: _.template($("#msgBar-template").html()),
@@ -130,8 +160,8 @@ App.LeftSidebarView = App.InfoBarView = Backbone.View.extend({
 	template: _.template($("#infoBar-template").html()),
 
 	events: {
-		"click .project-item": "renderProject",
-		"click #project-adder": "addProject"
+		"tap .project-item": "renderProject",
+		"tap #project-adder": "addProject"
 	},
 
 	initialize: function() {
@@ -194,7 +224,7 @@ App.CenterView = App.MainView = Backbone.View.extend({
 	template: _.template($("#main-template").html()),
 
 	events: {
-		"click #stage-adder": "addStage"
+		"tap #stage-adder": "addStage"
 	},
 
 	initialize: function() {
@@ -252,8 +282,8 @@ App.DialogView = Backbone.View.extend({
 	template: _.template($("#dialog-template").html()),
 
 	events: {
-		"click #submit" : "submit",
-		"click #cancel" : "cancel"
+		"tap #submit" : "submit",
+		"tap #cancel" : "cancel"
 	},
 
 	initialize: function(opt) {
@@ -406,9 +436,9 @@ App.DropdownView = Backbone.View.extend({
 	template: _.template($("#dropdown-template").html()),
 
 	events: {
-		"click #modify": "modify",
-		"click #delete": "delete",
-		"click #cancel": "cancel"
+		"tap #modify": "modify",
+		"tap #delete": "delete",
+		"tap #cancel": "cancel"
 	},
 
 	initialize: function(opt) {
@@ -461,8 +491,8 @@ App.SenderView = Backbone.View.extend({
 	template: _.template($("#sender-template").html()),
 
 	events: {
-		"click #submit" : "send",
-		"click #cancel" : "cancel"
+		"tap #submit" : "send",
+		"tap #cancel" : "cancel"
 	},
 
 	initialize: function() {
